@@ -34,7 +34,7 @@ const items = [
 export function AppSidebar() {
   return (
     <Sidebar>
-      <SidebarContent className="py-10">
+      <SidebarContent className="py-10 bg-white border-r-2 border-[#ccc]">
         <SidebarGroup className="space-y-8">
           <SidebarGroupLabel className="text-3xl font-bold">
             <span className="text-cavista-red">CT</span>Care
