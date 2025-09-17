@@ -1,0 +1,51 @@
+export const Requests_Data = [
+  {
+    request_date: "Jan 30, 2024",
+    duration: 3,
+    reason: "Flu",
+    attachment: null,
+    status: "approved",
+  },
+  {
+    request_date: "Jun 21, 2023",
+    duration: 1,
+    reason: "Menstrual Cramps",
+    attachment: null,
+    status: "pending",
+  },
+  {
+    request_date: "Oct 14, 2025",
+    duration: 4,
+    reason: "Flu",
+    attachment: null,
+    status: "approved",
+  },
+  {
+    request_date: " Jan 12, 2025",
+    duration: 2,
+    reason: "Back pain",
+    attachment: null,
+    status: "rejected",
+  },
+  {
+    request_date: "Apr 30, 2020",
+    duration: 3,
+    reason: "Stomach purge",
+    attachment: null,
+    status: "pending",
+  },
+  {
+    request_date: "Feb 10, 2021",
+    duration: 1,
+    reason: "Migraine",
+    attachment: null,
+    status: "rejected",
+  },
+  {
+    request_date: "Dec 30, 2022",
+    duration: 2,
+    reason: "Medical appointment",
+    attachment: null,
+    status: "pending",
+  },
+];
