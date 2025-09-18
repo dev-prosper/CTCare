@@ -52,18 +52,15 @@ export function AppSidebar() {
           </SidebarGroupLabel>
 
           <SidebarGroupContent>
-            <SidebarMenu className="border-t-2 border-[#ccc] pt-8">
+            <SidebarMenu className="border-t-2 border-[#ccc] pt-8 divide-y divide-[#ccc]">
               {items.map((item) => {
                 const isActive = pathname === item.url;
                 return (
-                  <SidebarMenuItem
-                    key={item.title}
-                    className="divide-y divide-[#ccc]"
-                  >
+                  <SidebarMenuItem key={item.title} className="">
                     <SidebarMenuButton
                       asChild
                       className={cn(
-                        "hover:bg-white hover:text-cavista-red hover:scale-100 hover:font-bold text-cavista-red font-medium border-b py-6",
+                        "hover:bg-white hover:text-cavista-red hover:scale-100 hover:font-bold text-cavista-red font-medium py-6 rounded-none",
                         isActive
                           ? "bg-cavista-red text-white font-bold"
                           : "text-cavista-red hover:bg-gray-100 hover:font-bold",
@@ -71,7 +68,7 @@ export function AppSidebar() {
                     >
                       <Link href={item.url}>
                         <item.icon />
-                        <span className="text-">{item.title}</span>
+                        <span className="text-sm">{item.title}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
