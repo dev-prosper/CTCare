@@ -8,19 +8,19 @@ export default function Home() {
   return (
     <section className="px-8 py-10">
       <div className="flex justify-between items-center">
-        <div className="space-y-2">
-          <h1 className="text-4xl font-semibold">My Sick Leave</h1>
-          <p className="text-xl leading-6 font-medium text-cavista-text-gray">
+        <div className="">
+          <h1 className="text-2xl font-black">My Sick Leave</h1>
+          <p className="text-sm text-cavista-text-gray">
             View your requests, balances, and upcoming leaves in real-time
           </p>
         </div>
 
         <div>
-          <Button className="bg-cavista-red py-8 text-lg">
+          <Button className="bg-cavista-red py-6 flex items-center">
+            <p className="font-semibold">Request Sick Leave</p>
             <span>
-              <Plus className="text-white font-bold size-6" />
+              <Plus className="text-white font-bold" />
             </span>
-            Request Sick Leave
           </Button>
         </div>
       </div>
