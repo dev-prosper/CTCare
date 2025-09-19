@@ -47,8 +47,8 @@ export default function RequestModal() {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button className="bg-cavista-red py-6 flex items-center">
-          <p className="font-semibold">Request Sick Leave</p>
+        <Button className="bg-cavista-red py-6 flex items-center font-semibold">
+          Request Sick Leave
           <span>
             <Plus className="text-white font-bold" />
           </span>

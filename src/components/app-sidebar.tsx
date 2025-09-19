@@ -43,7 +43,7 @@ export function AppSidebar() {
         <SidebarGroup className="space-y-8">
           <SidebarGroupLabel className="text-2xl bg-white font-black flex items-center">
             <Image
-              src="/cavista_logo-removebg-preview.png"
+              src="/cavista-logo.png"
               alt="Cavista Technologies Logo"
               height={50}
               width={50}
