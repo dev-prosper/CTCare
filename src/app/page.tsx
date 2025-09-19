@@ -1,8 +1,7 @@
 import LeaveStatusCards from "@/components/dashboard/leave-status-cards";
 import RecentActivities from "@/components/dashboard/recent-activities";
+import RequestModal from "@/components/dashboard/request-modal";
 import RequestsSummary from "@/components/dashboard/requests-summary";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
 
 export default function Home() {
   return (
@@ -16,12 +15,7 @@ export default function Home() {
         </div>
 
         <div>
-          <Button className="bg-cavista-red py-6 flex items-center">
-            <p className="font-semibold">Request Sick Leave</p>
-            <span>
-              <Plus className="text-white font-bold" />
-            </span>
-          </Button>
+          <RequestModal />
         </div>
       </div>
 
