@@ -81,7 +81,7 @@ export default function RequestsSummary() {
                 name="requestType"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Status filter</FormLabel>
+                    <FormLabel>Status Filter</FormLabel>
                     <Select value={field.value} onValueChange={field.onChange}>
                       <FormControl>
                         <SelectTrigger className="w-full">
@@ -110,7 +110,7 @@ export default function RequestsSummary() {
                 name="date"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel> Date filter</FormLabel>
+                    <FormLabel> Date Filter</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button

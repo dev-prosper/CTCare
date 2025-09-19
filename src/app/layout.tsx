@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
-import Header from "@/components/navigation/header";
 import { ToastContainer } from "react-toastify";
 
 const poppins = Poppins({
@@ -25,14 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.className} antialiased`}>
-        <SidebarProvider>
-          <AppSidebar />
-          <main className="w-full">
-            <Header />
-            {children}
-          </main>
-        </SidebarProvider>
-
+        <main className="w-full">{children}</main>
         <ToastContainer />
       </body>
     </html>
