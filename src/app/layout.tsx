@@ -4,6 +4,7 @@ import "./globals.css";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import Header from "@/components/navigation/header";
+import { ToastContainer } from "react-toastify";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -31,6 +32,8 @@ export default function RootLayout({
             {children}
           </main>
         </SidebarProvider>
+
+        <ToastContainer />
       </body>
     </html>
   );
