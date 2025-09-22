@@ -32,6 +32,9 @@ export default function RequestsTable({ filters }: LeaveRequestFilters) {
     setRequests(filtered);
   }, [filters]);
 
+  const formatStr = (str: string) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
   return (
     <Table>
       <TableHeader className="font-extrabold">
@@ -67,7 +70,7 @@ export default function RequestsTable({ filters }: LeaveRequestFilters) {
                         : "bg-amber-500 text-amber-100",
                   )}
                 >
-                  {request.status}
+                  {formatStr(request.status)}
                 </span>
               </TableCell>
             </TableRow>

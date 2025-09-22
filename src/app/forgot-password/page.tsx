@@ -8,36 +8,36 @@ import {
   FormField,
   FormMessage,
 } from "@/components/ui/form";
-import { Lock } from "lucide-react";
+import { ArrowLeft, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { UserLoginSchema } from "@/schemas";
+import { PasswordResetSchema } from "@/schemas";
 import z from "zod";
+import { createAxiosInstance } from "@/services/axios-instance";
 import Link from "next/link";
-import { AuthService } from "@/services/auth-service";
 
-export type LoginSchema = z.infer<typeof UserLoginSchema>;
+export type ResetPasswordSchema = z.infer<typeof PasswordResetSchema>;
 
-export default function Page() {
-  const form = useForm<LoginSchema>({
-    resolver: zodResolver(UserLoginSchema),
+export default function ForgotPasswordPage() {
+  const form = useForm<ResetPasswordSchema>({
+    resolver: zodResolver(PasswordResetSchema),
     defaultValues: {
       email: "",
-      password: "",
     },
   });
 
-  const handleLogin = async (data: LoginSchema) => {
+  const handlePasswordReset = async (data: ResetPasswordSchema) => {
     try {
-      const login = new AuthService();
-      const res = await login.handleLogin(data);
-      const { accessToken, refreshToken } = res;
+      const authApi = createAxiosInstance("auth");
+      const res = await authApi.post("/login", data);
+      const { accessToken, refreshToken } = res.data;
+
       console.log(accessToken, refreshToken);
     } catch (error) {
       console.error(
-        "Login failed:",
+        "Reset Password failed:",
         error instanceof Error
           ? error.message
           : "An error occurred while submitting the form.",
@@ -75,7 +75,7 @@ export default function Page() {
           <Form {...form}>
             <form
               className="space-y-5"
-              onSubmit={form.handleSubmit(handleLogin)}
+              onSubmit={form.handleSubmit(handlePasswordReset)}
             >
               <FormField
                 name="email"
@@ -95,37 +95,20 @@ export default function Page() {
                 )}
               />
 
-              <FormField
-                name="password"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        className="bg-white border-0 border-b-2 border-gray-300 rounded-none w-96 py-6.5 focus:ring-0 focus-visible:border-b-cavista-red focus-visible:bg-white"
-                        type="password"
-                        {...field}
-                        placeholder="Enter password"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
               <div className="flex justify-between items-end">
                 <Button className="bg-cavista-red px-8">
                   <span>
                     <Lock />
                   </span>
-                  Login
+                  Request Reset
                 </Button>
 
                 <Link
-                  href="/forgot-password"
-                  className="text-[12px] font-medium text-cavista-red hover:underline"
+                  href="/"
+                  className="text-[12px] font-medium text-cavista-red hover:underline flex items-center gap-1"
                 >
-                  Forgot password?
+                  <span>Back to Login</span>
+                  <ArrowLeft className="size-[1em]" />
                 </Link>
               </div>
             </form>
@@ -135,8 +118,3 @@ export default function Page() {
     </div>
   );
 }
-
-// const authApi = createAxiosInstance("auth");
-// const res = await authApi.post("/login", data);
-// const { accessToken, refreshToken } = res.data;
-// console.log(accessToken, refreshToken);
