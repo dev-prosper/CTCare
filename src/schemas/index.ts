@@ -12,3 +12,20 @@ export const LeaveRequestSchema = z.object({
     .min(3, { message: "Reason for leave is important for documentation" }),
   duration: z.number(),
 });
+
+export const UserLoginSchema = z.object({
+  email: z.email(),
+  // .regex(/^[A-Za-z0-9._%+-]+@axxess\.com$/, {
+  //   message: "Invalid email format",
+  // }),
+  password: z
+    .string()
+    .min(12, { message: "Password must be atleast 12 characters" }),
+});
+
+export const PasswordResetSchema = z.object({
+  email: z.email(),
+  // .regex(/^[A-Za-z0-9._%+-]+@axxess\.com$/, {
+  //   message: "Invalid email format",
+  // }),
+});
