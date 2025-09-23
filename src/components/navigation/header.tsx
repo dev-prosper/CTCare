@@ -1,7 +1,8 @@
 import React from "react";
 import { SidebarTrigger } from "../ui/sidebar";
-import { Bell, ChevronDown } from "lucide-react";
+import { Bell } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import LogoutPopover from "../dashboard/logout-popover";
 
 export default function Header() {
   return (
@@ -19,10 +20,10 @@ export default function Header() {
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
 
-          <p className="flex gap-2 font-semibold">
+          <p className="flex gap-2 font-semibold items-center text-gray-800">
             John Doe{" "}
             <span>
-              <ChevronDown />
+              <LogoutPopover />
             </span>
           </p>
         </div>

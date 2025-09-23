@@ -38,17 +38,24 @@ const items = [
 export function AppSidebar() {
   const pathname = usePathname();
   return (
-    <Sidebar>
+    <Sidebar className="">
       <SidebarContent className="py-2.5 border-r border-[#ccc]">
         <SidebarGroup className="space-y-8">
-          <SidebarGroupLabel className="text-2xl bg-white font-black flex items-center">
+          <SidebarGroupLabel className="text-2xl py-1 bg-white font-black flex items-center gap-1">
             <Image
               src="/cavista-logo.png"
               alt="Cavista Technologies Logo"
               height={50}
               width={50}
             />
-            <span className="text-cavista-red">CT</span>Care
+            <div className="">
+              <h1 className="text-black">
+                <span className="text-cavista-red">CT</span>Care
+              </h1>
+              <p className="text-[10px] font-semibold italic text-black">
+                ...Powering care for Cavistans
+              </p>
+            </div>
           </SidebarGroupLabel>
 
           <SidebarGroupContent>

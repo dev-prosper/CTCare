@@ -66,9 +66,14 @@ export default function Page() {
               className="object-cover"
             />
           </div>
-          <h1 className="font-bold text-3xl">
-            <span className="text-cavista-red">CT</span>Care
-          </h1>
+          <div>
+            <h1 className="font-bold text-3xl">
+              <span className="text-cavista-red">CT</span>Care
+            </h1>
+            <p className="text-[12px] font-semibold italic">
+              ...Powering care for Cavistans
+            </p>
+          </div>
         </div>
 
         <div>
