@@ -6,6 +6,12 @@ export const COOKIE_NAMES = {
   ACCESS_TOKEN_EXPIRATION: "accessTokenExpiresAt",
 };
 
+export const TOKEN_NAMES = {
+  ACCESS_TOKEN: "ctc-act",
+  REFRESH_TOKEN: "ctc-rft",
+  ACCESS_TOKEN_EXPIRATION: "ctc-act-exp",
+};
+
 export const AUTH_COOKIE_OPTS: TCookieOpts = {
   path: "/",
   httpOnly: true,

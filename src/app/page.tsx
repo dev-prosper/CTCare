@@ -16,8 +16,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { UserLoginSchema } from "@/schemas";
 import z from "zod";
 import Link from "next/link";
-import { AuthService } from "@/services/auth-service";
 import { toast } from "react-toastify";
+import api from "@/services/axios-instance";
+import { useAuthStore } from "@/store/auth-store";
+import { useRouter } from "next/navigation";
 
 export type LoginSchema = z.infer<typeof UserLoginSchema>;
 
@@ -33,13 +35,19 @@ export default function Page() {
     },
   });
 
+  const router = useRouter();
+
   const handleLogin = async (data: LoginSchema) => {
     try {
-      const login = new AuthService();
-      const res = await login.handleLogin(data);
-      toast.success("Login successful");
-      const { accessToken, refreshToken } = res;
-      console.log(accessToken, refreshToken);
+      const res = await api.post("api/v1/auth/login", data);
+
+      if (res.status === 200) {
+        const { accessToken, refreshToken } = res.data;
+        useAuthStore.getState().setTokens(accessToken, refreshToken);
+      }
+
+      toast.success("Login Successful");
+      router.push("/dashboard");
     } catch (error) {
       console.error(
         "Login failed:",
@@ -145,8 +153,3 @@ export default function Page() {
     </div>
   );
 }
-
-// const authApi = createAxiosInstance("auth");
-// const res = await authApi.post("/login", data);
-// const { accessToken, refreshToken } = res.data;
-// console.log(accessToken, refreshToken);

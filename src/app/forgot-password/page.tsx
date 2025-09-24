@@ -15,7 +15,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PasswordResetSchema } from "@/schemas";
 import z from "zod";
-import { createAxiosInstance } from "@/services/axios-instance";
 import Link from "next/link";
 
 export type ResetPasswordSchema = z.infer<typeof PasswordResetSchema>;
@@ -28,22 +27,7 @@ export default function ForgotPasswordPage() {
     },
   });
 
-  const handlePasswordReset = async (data: ResetPasswordSchema) => {
-    try {
-      const authApi = createAxiosInstance("auth");
-      const res = await authApi.post("/login", data);
-      const { accessToken, refreshToken } = res.data;
-
-      console.log(accessToken, refreshToken);
-    } catch (error) {
-      console.error(
-        "Reset Password failed:",
-        error instanceof Error
-          ? error.message
-          : "An error occurred while submitting the form.",
-      );
-    }
-  };
+  const handlePasswordReset = async () => {};
 
   return (
     <div className="flex h-screen">
