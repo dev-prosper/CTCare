@@ -1,3 +1,4 @@
+import { userAgent } from "next/server";
 import { z } from "zod";
 
 export const LeaveFiltersSchema = z.object({
@@ -34,6 +35,9 @@ export const UserLoginSchema = z.object({
   password: z
     .string()
     .min(12, { message: "Password must be atleast 12 characters" }),
+  useOtp: z.boolean(),
+  ip: z.string(),
+  userAgent: z.string(),
 });
 
 export const PasswordResetSchema = z.object({

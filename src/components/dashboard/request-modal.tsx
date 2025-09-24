@@ -49,7 +49,7 @@ export default function RequestModal() {
 
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button className="bg-cavista-red py-6 flex items-center font-semibold">
           Request Sick Leave
           <span>

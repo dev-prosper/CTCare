@@ -17,6 +17,7 @@ import { UserLoginSchema } from "@/schemas";
 import z from "zod";
 import Link from "next/link";
 import { AuthService } from "@/services/auth-service";
+import { toast } from "react-toastify";
 
 export type LoginSchema = z.infer<typeof UserLoginSchema>;
 
@@ -26,6 +27,9 @@ export default function Page() {
     defaultValues: {
       email: "",
       password: "",
+      useOtp: false,
+      ip: "string",
+      userAgent: "string",
     },
   });
 
@@ -33,6 +37,7 @@ export default function Page() {
     try {
       const login = new AuthService();
       const res = await login.handleLogin(data);
+      toast.success("Login successful");
       const { accessToken, refreshToken } = res;
       console.log(accessToken, refreshToken);
     } catch (error) {

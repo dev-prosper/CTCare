@@ -1,3 +1,15 @@
+export type TCookieOpts = {
+  expires?: number | Date;
+  domain?: string;
+  path?: string;
+  secure?: boolean;
+  sameSite?: boolean | "none" | "lax" | "strict";
+  partitioned?: boolean;
+  httpOnly?: boolean;
+  maxAge?: number;
+  priority?: "low" | "medium" | "high";
+};
+
 export type LeaveRequestFilters = {
   filters: {
     date?: string;
@@ -33,4 +45,11 @@ export type ResetPasswordResponse = {
   status: number;
   errorMessage: string;
   resetDone: boolean;
+};
+
+export type TSuccessResponse<TData> = {
+  status_code: number;
+  success: true;
+  message: string;
+  data: TData;
 };

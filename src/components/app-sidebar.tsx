@@ -25,7 +25,7 @@ const items = [
   },
   {
     title: "Leave Requests",
-    url: "#",
+    url: "/leave-requests",
     icon: ChartNoAxesColumnIcon,
   },
   {
