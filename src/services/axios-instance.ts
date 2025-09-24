@@ -1,90 +1,87 @@
-import axios, { AxiosInstance, RawAxiosRequestHeaders } from "axios";
+// api.ts
+import axios from "axios";
+import { useAuthStore } from "@/store/auth-store";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
-// let failedQueue: AxiosRequestConfig[] = []
-
-// const processQueue = (accessToken: string, instance: AxiosInstance) => {
-//   failedQueue.forEach((request) => {
-//     if (request && request.headers) {
-//       request.headers.Authorization = `Bearer ${accessToken}`
-//       instance(request)
-//     }
-//   })
-//   failedQueue = []
-// }
-
-export const createAxiosInstance = (
-  endpoint: string,
-  headers?: RawAxiosRequestHeaders,
-): AxiosInstance => {
-  return axios.create({
-    baseURL: `${API_BASE_URL}/api/v1/${endpoint}`,
-    timeout: 12000,
-    headers: {
-      "Content-Type": "application/json",
-      ...headers,
-    },
-    withCredentials: true,
-  });
+type FailedRequest = {
+  resolve: (token: string) => void;
+  reject: (error: unknown) => void;
 };
 
-// export const createProtectedAxiosInstance = (
-//   endpoint: string,
-//   headers?: RawAxiosRequestHeaders
-// ): AxiosInstance => {
-//   const protectedBaseInstance = axios.create({
-//     timeout: 120000,
-//     baseURL: `${API_BASE_URL}/api/v1/${endpoint}/`,
-//     withCredentials: true,
-//     headers: {
-//       'Content-Type': 'application/json',
-//       ...headers,
-//     },
-//   })
+const api = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+  withCredentials: false, // JWTs are passed in headers, not cookies
+});
 
-//   protectedBaseInstance.interceptors.response.use(
-//     (response) => response,
-//     async (error) => {
-//       const originalRequest = error.config
-//       console.log('error out', originalRequest)
-//       if (error.response?.status === 401 && !originalRequest._retry) {
-//         const { refreshToken } = await getAccessRefreshTokens()
+// Request interceptor: attach access token
+api.interceptors.request.use((config) => {
+  const token = useAuthStore.getState().accessToken;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
-//         if (!refreshToken) {
-//           return Promise.reject(error)
-//         }
+// Response interceptor: handle 401 and try refresh
+let isRefreshing = false;
+let failedQueue: FailedRequest[] = [];
 
-//         originalRequest._retry = true
+const processQueue = (error: unknown, token: string | null = null) => {
+  failedQueue.forEach((prom) => {
+    if (token) {
+      prom.resolve(token);
+    } else {
+      prom.reject(error);
+    }
+  });
+  failedQueue = [];
+};
 
-//         if (isRefreshing) {
-//           return failedQueue.push(originalRequest)
-//         }
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
 
-//         isRefreshing = true
+    // If 401 and not already retrying
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        }).then((token) => {
+          originalRequest.headers.Authorization = `Bearer ${token}`;
+          return api(originalRequest);
+        });
+      }
 
-//         try {
-//           const { access_token, refresh_token } =
-//             await refreshAccessRefreshTokens(refreshToken)
+      originalRequest._retry = true;
+      isRefreshing = true;
 
-//           if (access_token) {
-//             await setAccessRefreshTokens(access_token, refresh_token)
-//             originalRequest.headers.Authorization = `Bearer ${access_token}`
+      try {
+        const { refreshToken } = useAuthStore.getState();
+        const res = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}api/v1/auth/refresh-token`,
+          { refreshToken },
+        );
 
-//             processQueue(access_token, protectedBaseInstance)
-//             return protectedBaseInstance(originalRequest)
-//           }
-//         } catch (refreshError) {
-//           // processQueue(refreshError as Error)
-//           return Promise.reject(refreshError)
-//         } finally {
-//           isRefreshing = false
-//         }
-//       }
+        const newAccessToken = res.data.accessToken;
+        const newRefreshToken = res.data.refreshToken;
 
-//       return Promise.reject(error)
-//     }
-//   )
+        useAuthStore.getState().setTokens(newAccessToken, newRefreshToken);
 
-//   return protectedBaseInstance
-// }
+        processQueue(null, newAccessToken);
+
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        return api(originalRequest);
+      } catch (err) {
+        processQueue(err, null);
+        useAuthStore.getState().clear(); // logout user
+        return Promise.reject(err);
+      } finally {
+        isRefreshing = false;
+      }
+    }
+
+    return Promise.reject(error);
+  },
+);
+
+export default api;

@@ -39,14 +39,17 @@ export default function RequestModal() {
       requestDate: formattedDate(date),
       reason: "",
       duration: 0,
+      doctorReport: [],
     },
   });
+
+  const duration = form.watch("duration");
 
   const submitRequest = () => {};
 
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button className="bg-cavista-red py-6 flex items-center font-semibold">
           Request Sick Leave
           <span>
@@ -128,21 +131,46 @@ export default function RequestModal() {
                   </FormItem>
                 )}
               />
+
+              {duration > 2 && (
+                <FormField
+                  control={form.control}
+                  name="doctorReport"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-semibold">
+                        Upload Doctor&apos;s Report
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="file"
+                          accept=".pdf,.jpg,.jpeg,.png"
+                          onChange={(e) => field.onChange(e.target.files?.[0])}
+                          className="focus-visible:border-cavista-red focus-visible:border-2 placeholder:text-cavista-red"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+
+              <DialogFooter>
+                <Button className="bg-cavista-red" type="submit">
+                  Apply
+                </Button>
+                <DialogClose asChild>
+                  <Button
+                    variant="outline"
+                    className="border-cavista-red border-2 text-cavista-red hover:text-cavista-red"
+                  >
+                    Cancel
+                  </Button>
+                </DialogClose>
+              </DialogFooter>
             </form>
           </Form>
         </div>
-
-        <DialogFooter>
-          <Button className="bg-cavista-red">Apply</Button>
-          <DialogClose asChild>
-            <Button
-              variant="outline"
-              className="border-cavista-red border-2 text-cavista-red hover:text-cavista-red"
-            >
-              Cancel
-            </Button>
-          </DialogClose>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
