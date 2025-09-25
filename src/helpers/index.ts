@@ -1,59 +1,10 @@
-// type DateInfo = {
-//   year: number;
-//   month: number; // 1–12
-//   day: number; // 1–31
-//   dayOfWeek: string; // e.g. "Monday"
-//   date: Date; // full Date object
-//   formatted: string; // e.g. "Sep 25 2025"
-// };
-
-// export function getDateRange(
-//   startDateStr: string,
-//   duration: number,
-// ): {
-//   startDate: DateInfo;
-//   endDate: DateInfo;
-// } {
-//   const start = new Date(startDateStr);
-
-//   // helper to extract info
-//   const toDateInfo = (d: Date): DateInfo => {
-//     const dayNames = [
-//       "Sunday",
-//       "Monday",
-//       "Tuesday",
-//       "Wednesday",
-//       "Thursday",
-//       "Friday",
-//       "Saturday",
-//     ];
-//     return {
-//       year: d.getFullYear(),
-//       month: d.getMonth() + 1,
-//       day: d.getDate(),
-//       dayOfWeek: dayNames[d.getDay()],
-//       date: d,
-//       formatted: d.toDateString(), // "Thu Sep 25 2025"
-//     };
-//   };
-
-//   // endDate = startDate + duration
-//   const end = new Date(start);
-//   end.setDate(start.getDate() + duration);
-
-//   return {
-//     startDate: toDateInfo(start),
-//     endDate: toDateInfo(end),
-//   };
-// }
-
 type DateInfo = {
   year: number;
   month: number; // 1–12
   day: number; // 1–31
   dayOfWeek: number; // Sunday = 0
   date: Date;
-  formatted: string; // e.g. "Thu Sep 25 2025"
+  formatted: string; // e.g. "2025-09-23"
 };
 
 export function getDateRange(
@@ -66,13 +17,17 @@ export function getDateRange(
   const start = new Date(startDateStr);
 
   const toDateInfo = (d: Date): DateInfo => {
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, "0");
+    const dd = String(d.getDate()).padStart(2, "0");
+
     return {
-      year: d.getFullYear(),
+      year: yyyy,
       month: d.getMonth() + 1,
       day: d.getDate(),
-      dayOfWeek: d.getDay(), // directly returns number, Sunday=0
+      dayOfWeek: d.getDay(), // numeric index (0=Sunday)
       date: d,
-      formatted: d.toDateString(),
+      formatted: `${yyyy}-${mm}-${dd}`, // ISO-like format
     };
   };
 
@@ -87,25 +42,4 @@ export function getDateRange(
 
 // Example
 const result = getDateRange("Sep 25 2025", 5);
-
 console.log(result);
-/*
-{
-  startDate: {
-    year: 2025,
-    month: 9,
-    day: 25,
-    dayOfWeek: "Thursday",
-    date: 2025-09-25T00:00:00.000Z,
-    formatted: "Thu Sep 25 2025"
-  },
-  endDate: {
-    year: 2025,
-    month: 9,
-    day: 30,
-    dayOfWeek: "Tuesday",
-    date: 2025-09-30T00:00:00.000Z,
-    formatted: "Tue Sep 30 2025"
-  }
-}
-*/

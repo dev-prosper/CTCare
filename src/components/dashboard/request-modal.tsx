@@ -66,19 +66,11 @@ export default function RequestModal() {
       const res = api.post("api/v1/leave/requests", {
         employeeId: employeeId,
         leaveTypeId: LEAVE_CONSTANTS.leavetypeID,
-        startDate: {
-          year: startDate.year,
-          month: startDate.month,
-          day: startDate.day,
-        },
-        endDate: {
-          year: endDate.year,
-          month: endDate.month,
-          day: endDate.day,
-        },
-        unit: 1,
+        startDate: startDate.formatted,
+        endDate: endDate.formatted,
+        unit: 0,
         doctorNoteAttachmentId: null,
-        comment: "string",
+        comment: "",
       });
       console.log(res);
     } catch (error) {}

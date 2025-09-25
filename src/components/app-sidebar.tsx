@@ -43,7 +43,7 @@ export function AppSidebar() {
   const roles = useAuthStore.getState().roles;
 
   let itemsToShow: NavItem[] = [];
-  if (roles?.includes("manager")) {
+  if (roles?.includes("EngineeringManager")) {
     itemsToShow = [navItems.dashboard, navItems.leaveRequests];
   } else if (roles?.includes("people-team")) {
     itemsToShow = [navItems.settings];
