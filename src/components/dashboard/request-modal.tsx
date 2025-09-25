@@ -26,7 +26,6 @@ import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import api from "@/services/axios-instance";
 import { getDateRange } from "@/helpers";
-import { AxiosResponse } from "axios";
 import { useAuthStore } from "@/store/auth-store";
 import { LEAVE_CONSTANTS } from "@/constants";
 
@@ -73,7 +72,14 @@ export default function RequestModal() {
         comment: "",
       });
       console.log(res);
-    } catch (error) {}
+    } catch (error) {
+      console.error(
+        "Login failed:",
+        error instanceof Error
+          ? error.message
+          : "An error occurred while submitting the form.",
+      );
+    }
   };
 
   return (
