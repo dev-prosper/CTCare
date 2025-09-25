@@ -12,12 +12,14 @@ import { LeaveRequestFilters, LeaveRequestData } from "@/types";
 import { useEffect, useState } from "react";
 
 export default function RequestsTable({ filters }: LeaveRequestFilters) {
-  const [requests, setRequests] = useState<LeaveRequestData[]>(Requests_Data);
+  const [requests, setRequests] = useState<LeaveRequestData[]>([]);
 
   useEffect(() => {
     const { date, requestType } = filters;
 
-    let filtered = [...Requests_Data];
+    let filtered: LeaveRequestData[] = [
+      ...(Requests_Data as LeaveRequestData[]),
+    ];
 
     if (date) {
       filtered = filtered.filter(
