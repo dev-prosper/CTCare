@@ -1,9 +1,10 @@
 import { queryOptions } from "@tanstack/react-query";
-import { LeaveRequestsStatsData } from "@/types";
+import { LeaveRequestsStatsResponseData } from "@/types";
 import api from "@/services/axios-instance";
 
-const getLeaveStats = async (): Promise<LeaveRequestsStatsData> => {
-  const res = await api.get("/api/v1/leave/");
+const getLeaveStats = async (): Promise<LeaveRequestsStatsResponseData> => {
+  const res = await api.get("/api/v1/leave/requests/my/counts");
+  console.log(res.data.data);
   return res.data.data;
 };
 

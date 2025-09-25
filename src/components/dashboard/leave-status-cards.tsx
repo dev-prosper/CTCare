@@ -25,7 +25,7 @@ export default function LeaveStatusCards() {
         <CardContent className="flex justify-between items-center text-white">
           <div className="space-y-2">
             <h3 className="font-medium text-base">Approved Requests</h3>
-            <p className="text-2xl font-bold">{leaveStats?.data.approved}</p>
+            <p className="text-2xl font-bold">{leaveStats?.approved}</p>
           </div>
           <SquareCheck className="size-6" />
         </CardContent>
@@ -35,7 +35,7 @@ export default function LeaveStatusCards() {
         <CardContent className="flex justify-between items-center text-white">
           <div className="space-y-2">
             <h3 className="font-medium text-base">Rejected Requests</h3>
-            <p className="text-2xl font-bold">{leaveStats?.data.cancelled}</p>
+            <p className="text-2xl font-bold">{leaveStats?.cancelled}</p>
           </div>
           <Ban className="size-6" />
         </CardContent>
