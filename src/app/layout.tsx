@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ToastContainer } from "react-toastify";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Providers from "./providers";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -14,7 +14,6 @@ export const metadata: Metadata = {
   title: "CT Care by Cavista Technologies",
   description: "Your Rest is One Click Away",
 };
-const queryclient = new QueryClient();
 
 export default function RootLayout({
   children,
@@ -24,10 +23,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.className} antialiased`}>
-        {/* <QueryClientProvider client={queryclient}> */}
-        <main className="w-full">{children}</main>
+        <Providers>
+          <main className="w-full">{children}</main>
+        </Providers>
         <ToastContainer />
-        {/* </QueryClientProvider> */}
       </body>
     </html>
   );

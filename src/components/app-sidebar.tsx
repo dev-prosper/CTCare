@@ -15,28 +15,42 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useAuthStore } from "@/store/auth-store";
+
+type NavItem = (typeof navItems)[keyof typeof navItems];
 
 // Menu items.
-const items = [
-  {
+const navItems = {
+  dashboard: {
     title: "Dashboard",
     url: "/dashboard",
     icon: LayoutDashboard,
   },
-  {
+  leaveRequests: {
     title: "Leave Requests",
     url: "/leave-requests",
     icon: ChartNoAxesColumnIcon,
   },
-  {
+  settings: {
     title: "Settings",
-    url: "#",
+    url: "/settings",
     icon: Settings,
   },
-];
+};
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const roles = useAuthStore.getState().roles;
+
+  let itemsToShow: NavItem[] = [];
+  if (roles?.includes("EngineeringManager")) {
+    itemsToShow = [navItems.dashboard, navItems.leaveRequests];
+  } else if (roles?.includes("people-team")) {
+    itemsToShow = [navItems.settings];
+  } else {
+    itemsToShow = [navItems.dashboard];
+  }
+
   return (
     <Sidebar className="">
       <SidebarContent className="py-2.5 border-r border-[#ccc]">
@@ -60,7 +74,7 @@ export function AppSidebar() {
 
           <SidebarGroupContent>
             <SidebarMenu className="border-t-2 border-[#ccc] pt-8 divide-y divide-[#ccc]">
-              {items.map((item) => {
+              {itemsToShow.map((item) => {
                 const isActive = pathname === item.url;
                 return (
                   <SidebarMenuItem key={item.title} className="">

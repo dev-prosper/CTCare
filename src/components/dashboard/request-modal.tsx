@@ -24,6 +24,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
+import api from "@/services/axios-instance";
+import { getDateRange } from "@/helpers";
+import { AxiosResponse } from "axios";
+import { useAuthStore } from "@/store/auth-store";
+import { LEAVE_CONSTANTS } from "@/constants";
 
 export type LeaveRequestFormType = z.infer<typeof LeaveRequestSchema>;
 
@@ -37,18 +42,48 @@ export default function RequestModal() {
     resolver: zodResolver(LeaveRequestSchema),
     defaultValues: {
       requestDate: formattedDate(date),
-      reason: "",
+      // reason: "",
       duration: 0,
-      doctorReport: [],
+      doctorNoteAttachmentId: null,
     },
   });
 
-  const duration = form.watch("duration");
+  // const duration = form.watch("duration");
 
-  const submitRequest = () => {};
+  const submitRequest = async (data: LeaveRequestFormType) => {
+    const employeeId = useAuthStore.getState().employeeId;
+
+    console.log("Form submitted:", data);
+
+    const { startDate, endDate } = getDateRange(
+      data.requestDate,
+      data.duration,
+    );
+
+    console.log(startDate);
+    console.log(endDate);
+    try {
+      const res = api.post("api/v1/leave/requests", {
+        employeeId: employeeId,
+        leaveTypeId: LEAVE_CONSTANTS.leavetypeID,
+        startDate: startDate.formatted,
+        endDate: endDate.formatted,
+        unit: 0,
+        doctorNoteAttachmentId: null,
+        comment: "",
+      });
+      console.log(res);
+    } catch (error) {}
+  };
 
   return (
-    <Dialog>
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          form.reset();
+        }
+      }}
+    >
       <DialogTrigger asChild>
         <Button className="bg-cavista-red py-6 flex items-center font-semibold">
           Request Sick Leave
@@ -70,7 +105,9 @@ export default function RequestModal() {
         <div>
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit(submitRequest)}
+              onSubmit={form.handleSubmit(submitRequest, (errors) => {
+                console.log("Validation failed:", errors);
+              })}
               className="space-y-6 mt-3"
             >
               <FormField
@@ -92,7 +129,7 @@ export default function RequestModal() {
                 )}
               />
 
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="reason"
                 render={({ field }) => (
@@ -110,7 +147,7 @@ export default function RequestModal() {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
 
               <FormField
                 control={form.control}
@@ -124,6 +161,7 @@ export default function RequestModal() {
                       <Input
                         type="number"
                         {...field}
+                        onChange={(e) => field.onChange(e.target.valueAsNumber)}
                         className="focus-visible:border-cavista-red focus-visible:border-2"
                       />
                     </FormControl>
@@ -132,28 +170,73 @@ export default function RequestModal() {
                 )}
               />
 
-              {duration > 2 && (
+              {/* {duration > 2 && (
                 <FormField
                   control={form.control}
-                  name="doctorReport"
+                  name="doctorNoteAttachmentId"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="font-semibold">
                         Upload Doctor&apos;s Report
                       </FormLabel>
                       <FormControl>
-                        <Input
-                          type="file"
-                          accept=".pdf,.jpg,.jpeg,.png"
-                          onChange={(e) => field.onChange(e.target.files?.[0])}
-                          className="focus-visible:border-cavista-red focus-visible:border-2 placeholder:text-cavista-red"
-                        />
+                        <div>
+                          
+                          <input
+                            id="file-upload"
+                            type="file"
+                            accept=".pdf,.jpg,.jpeg,.png"
+                            className="hidden"
+                            onChange={async (e) => {
+                              const file = e.target.files?.[0];
+                              if (!file) return;
+
+                              const formData = new FormData();
+                              formData.append("file", file);
+
+                              try {
+                                const res = await api.post(
+                                  `api/v1/files/leave/${LEAVE_CONSTANTS.leavetypeID}`,
+                                  formData,
+                                  {
+                                    headers: {
+                                      "Content-Type": "multipart/form-data",
+                                    },
+                                  }
+                                );
+
+                                const fileId = res.data?.id; 
+                                field.onChange(fileId); 
+                              } catch (error) {
+                                console.error("File upload failed:", error);
+                              }
+                            }}
+                          />
+
+                          <Button
+                            type="button"
+                            variant="outline"
+                            className="border-cavista-red text-cavista-red hover:bg-gray-50"
+                            onClick={() =>
+                              document.getElementById("file-upload")?.click()
+                            }
+                          >
+                            Upload File
+                          </Button>
+
+                          
+                          {field.value && (
+                            <p className="mt-2 text-xs text-green-600">
+                              File uploaded successfully: {field.value}
+                            </p>
+                          )}
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-              )}
+              )} */}
 
               <DialogFooter>
                 <Button className="bg-cavista-red" type="submit">
