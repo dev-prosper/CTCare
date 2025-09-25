@@ -24,6 +24,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
+import api from "@/services/axios-instance";
+import { getDateRange } from "@/helpers";
 
 export type LeaveRequestFormType = z.infer<typeof LeaveRequestSchema>;
 
@@ -39,13 +41,41 @@ export default function RequestModal() {
       requestDate: formattedDate(date),
       reason: "",
       duration: 0,
-      doctorReport: [],
+      doctorNoteAttachmentId: undefined,
     },
   });
 
   const duration = form.watch("duration");
 
-  const submitRequest = () => {};
+  const submitRequest = async (data: LeaveRequestFormType) => {
+    console.log("Form submitted:", data);
+    console.log(data.requestDate);
+    const { startDate, endDate } = getDateRange(
+      data.requestDate,
+      data.duration,
+    );
+    try {
+      const res = api.post("api/v1/leave/requests", {
+        employeeId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        leaveTypeId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        startDate: {
+          year: startDate.year,
+          month: startDate.month,
+          day: startDate.day,
+          dayOfWeek: startDate.dayOfWeek,
+        },
+        endDate: {
+          year: endDate.year,
+          month: endDate.month,
+          day: endDate.day,
+          dayOfWeek: endDate.dayOfWeek,
+        },
+        unit: 0,
+        doctorNoteAttachmentId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        comment: "string",
+      });
+    } catch (error) {}
+  };
 
   return (
     <Dialog
@@ -76,7 +106,9 @@ export default function RequestModal() {
         <div>
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit(submitRequest)}
+              onSubmit={form.handleSubmit(submitRequest, (errors) => {
+                console.log("Validation failed:", errors);
+              })}
               className="space-y-6 mt-3"
             >
               <FormField
@@ -142,7 +174,7 @@ export default function RequestModal() {
               {duration > 2 && (
                 <FormField
                   control={form.control}
-                  name="doctorReport"
+                  name="doctorNoteAttachmentId"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="font-semibold">

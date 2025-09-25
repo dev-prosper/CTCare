@@ -15,16 +15,11 @@ export const LeaveRequestSchema = z
     duration: z
       .number()
       .min(1, { message: "Leave duration must be at least 1 day" }),
-    doctorReport: z
-      .any()
-      .refine((file) => file instanceof File || file === undefined, {
-        message: "Invalid file type",
-      })
-      .optional(),
+    doctorNoteAttachmentId: z.string().optional(),
   })
-  .refine((data) => data.duration <= 2 || data.doctorReport instanceof File, {
+  .refine((data) => data.duration <= 2 || !!data.doctorNoteAttachmentId, {
     message: "Doctor’s report is required for leave longer than 2 days",
-    path: ["doctorReport"],
+    path: ["doctorNoteAttachmentId"],
   });
 
 export const UserLoginSchema = z.object({

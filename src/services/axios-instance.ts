@@ -63,7 +63,7 @@ api.interceptors.response.use(
         const refreshToken = localStorage.getItem("ctc-rft");
         const accessToken = localStorage.getItem("ctc-act");
         console.log("Trying refresh with token:", refreshToken);
-        const res = await axios.post(
+        const res = await api.post(
           `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth/refresh-token`,
           {
             refreshToken,

@@ -53,3 +53,25 @@ export type TSuccessResponse<TData> = {
   message: string;
   data: TData;
 };
+
+export type LeaveRequestsStatsData = {
+  status: 100;
+  errorMessage: string;
+  data: {
+    submitted: number;
+    returned: number;
+    approved: number;
+    cancelled: number;
+  };
+};
+
+export type LeaveBalanceResponse = {
+  status: number;
+  errorMessage: string;
+  year: number;
+  leaveTypeId: "3fa85f64-5717-4562-b3fc-2c963f66afa6";
+  entitled: number;
+  used: number;
+  pending: number;
+  available: number;
+};

@@ -40,13 +40,15 @@ export default function Page() {
   const handleLogin = async (data: LoginSchema) => {
     try {
       const res = await api.post("/api/v1/auth/login", data);
-      // const res = await api.post("api/v1/auth/login", data);
-      console.log(res);
+      console.log(res.data);
       if (res.status === 200) {
-        const { accessToken, refreshToken } = res.data;
+        // const { accessToken, refreshToken } = res.data;
+        const { accessToken, refreshToken, employeeId, role } = res.data;
         localStorage.setItem("ctc-act", accessToken);
         localStorage.setItem("ctc-rft", refreshToken);
-        useAuthStore.getState().setTokens(accessToken, refreshToken);
+        // localStorage.setItem("ctc-emp", employeeId);
+        // localStorage.setItem("ctc-role", role);
+        useAuthStore.getState().setUser(employeeId, role);
 
         console.log("Login response:", res.data);
         console.log("Access:", accessToken);

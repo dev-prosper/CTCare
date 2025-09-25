@@ -3,17 +3,28 @@ import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
 import { Button } from "../ui/button";
 import { ChevronDown, LogOut } from "lucide-react";
 import api from "@/services/axios-instance";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/auth-store";
 
 export default function LogoutPopover() {
+  const router = useRouter();
+
   const logOutUser = async () => {
+    const refreshToken = localStorage.getItem("ctc-rft");
     try {
       const res = await api.post("api/v1/auth/logout-all", {
-        refreshToken: "string",
+        refreshToken: refreshToken,
         revokeAllSessions: true,
-        employeeId: "53751c3a-499d-1ca-7553-9d496d4e92a7",
+        employeeId: "53751c3a-499d-1c3a-7553-9d496d4e92a7",
       });
-      console.log("response ready");
-      console.log(res);
+      if (res.status === 204) {
+        toast.success("Logged Out successfully");
+        router.push("/");
+        localStorage.removeItem("ctc-act");
+        localStorage.removeItem("ctc-rft");
+        useAuthStore.getState().clear();
+      }
     } catch (error) {
       console.error(
         "Login failed:",
