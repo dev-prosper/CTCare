@@ -53,11 +53,12 @@ export default function Page() {
         router.push("/dashboard");
       }
     } catch (error) {
-      console.error(
-        "Login failed:",
-        error instanceof Error
-          ? error.message
-          : "An error occurred while submitting the form.",
+      toast.error(
+        `Login failed: ${
+          error instanceof Error
+            ? error.message
+            : "An error occurred while logging in"
+        }`,
       );
     }
   };
