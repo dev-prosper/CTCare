@@ -1,4 +1,3 @@
-// api.ts
 import axios from "axios";
 import { useAuthStore } from "@/store/auth-store";
 
@@ -9,12 +8,16 @@ type FailedRequest = {
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
-  withCredentials: false, // JWTs are passed in headers, not cookies
+  headers: {
+    "x-api-key": "local-dev-key-123",
+  },
+  withCredentials: true,
 });
 
 // Request interceptor: attach access token
 api.interceptors.request.use((config) => {
-  const token = useAuthStore.getState().accessToken;
+  // const token = useAuthStore.getState().accessToken;
+  const token = localStorage.getItem("ctc-act");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -56,16 +59,28 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const { refreshToken } = useAuthStore.getState();
+        // const { refreshToken, accessToken } = useAuthStore.getState();
+        const refreshToken = localStorage.getItem("ctc-rft");
+        const accessToken = localStorage.getItem("ctc-act");
+        console.log("Trying refresh with token:", refreshToken);
         const res = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}api/v1/auth/refresh-token`,
-          { refreshToken },
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth/refresh-token`,
+          {
+            refreshToken,
+            accessToken,
+            ip: "string",
+            userAgent: "string",
+            revokeAllSessions: true,
+          },
         );
 
         const newAccessToken = res.data.accessToken;
         const newRefreshToken = res.data.refreshToken;
 
-        useAuthStore.getState().setTokens(newAccessToken, newRefreshToken);
+        localStorage.setItem("ctc-act", newAccessToken);
+        localStorage.setItem("ctc-rft", newRefreshToken);
+
+        // useAuthStore.getState().setTokens(newAccessToken, newRefreshToken);
 
         processQueue(null, newAccessToken);
 

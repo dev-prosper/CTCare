@@ -39,15 +39,23 @@ export default function Page() {
 
   const handleLogin = async (data: LoginSchema) => {
     try {
-      const res = await api.post("api/v1/auth/login", data);
-
+      const res = await api.post("/api/v1/auth/login", data);
+      // const res = await api.post("api/v1/auth/login", data);
+      console.log(res);
       if (res.status === 200) {
         const { accessToken, refreshToken } = res.data;
+        localStorage.setItem("ctc-act", accessToken);
+        localStorage.setItem("ctc-rft", refreshToken);
         useAuthStore.getState().setTokens(accessToken, refreshToken);
-      }
 
-      toast.success("Login Successful");
-      router.push("/dashboard");
+        console.log("Login response:", res.data);
+        console.log("Access:", accessToken);
+        console.log("Refresh:", refreshToken);
+
+        // rn res.data
+        toast.success("Login Successful");
+        router.push("/dashboard");
+      }
     } catch (error) {
       console.error(
         "Login failed:",

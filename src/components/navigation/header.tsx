@@ -20,12 +20,14 @@ export default function Header() {
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
 
-          <p className="flex gap-2 font-semibold items-center text-gray-800">
-            John Doe{" "}
+          <div className="flex items-center">
+            <p className="flex gap-2 font-semibold items-center text-gray-800">
+              John Doe{" "}
+            </p>
             <span>
               <LogoutPopover />
             </span>
-          </p>
+          </div>
         </div>
       </nav>
     </header>
