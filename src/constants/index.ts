@@ -33,3 +33,7 @@ export const ACCESS_TOKEN_EXPIRATION_COOKIE_OPTS: TCookieOpts = {
   ...AUTH_COOKIE_OPTS,
   maxAge: 4 * 3600, // 4 days (1 day more than access token just in case)
 };
+
+export const LEAVE_CONSTANTS = {
+  leavetypeID: "49741c3a-a6ad-1c3a-7449-ada6e54eb06b",
+};

@@ -42,19 +42,13 @@ export default function Page() {
       const res = await api.post("/api/v1/auth/login", data);
       console.log(res.data);
       if (res.status === 200) {
-        // const { accessToken, refreshToken } = res.data;
-        const { accessToken, refreshToken, employeeId, role } = res.data;
+        const { accessToken, refreshToken, employeeId, roles } = res.data;
         localStorage.setItem("ctc-act", accessToken);
         localStorage.setItem("ctc-rft", refreshToken);
-        // localStorage.setItem("ctc-emp", employeeId);
-        // localStorage.setItem("ctc-role", role);
-        useAuthStore.getState().setUser(employeeId, role);
+        useAuthStore.getState().setUser(employeeId, roles);
 
-        console.log("Login response:", res.data);
-        console.log("Access:", accessToken);
-        console.log("Refresh:", refreshToken);
+        console.log(employeeId, roles);
 
-        // rn res.data
         toast.success("Login Successful");
         router.push("/dashboard");
       }

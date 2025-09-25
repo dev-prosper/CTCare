@@ -1,10 +1,59 @@
+// type DateInfo = {
+//   year: number;
+//   month: number; // 1–12
+//   day: number; // 1–31
+//   dayOfWeek: string; // e.g. "Monday"
+//   date: Date; // full Date object
+//   formatted: string; // e.g. "Sep 25 2025"
+// };
+
+// export function getDateRange(
+//   startDateStr: string,
+//   duration: number,
+// ): {
+//   startDate: DateInfo;
+//   endDate: DateInfo;
+// } {
+//   const start = new Date(startDateStr);
+
+//   // helper to extract info
+//   const toDateInfo = (d: Date): DateInfo => {
+//     const dayNames = [
+//       "Sunday",
+//       "Monday",
+//       "Tuesday",
+//       "Wednesday",
+//       "Thursday",
+//       "Friday",
+//       "Saturday",
+//     ];
+//     return {
+//       year: d.getFullYear(),
+//       month: d.getMonth() + 1,
+//       day: d.getDate(),
+//       dayOfWeek: dayNames[d.getDay()],
+//       date: d,
+//       formatted: d.toDateString(), // "Thu Sep 25 2025"
+//     };
+//   };
+
+//   // endDate = startDate + duration
+//   const end = new Date(start);
+//   end.setDate(start.getDate() + duration);
+
+//   return {
+//     startDate: toDateInfo(start),
+//     endDate: toDateInfo(end),
+//   };
+// }
+
 type DateInfo = {
   year: number;
   month: number; // 1–12
   day: number; // 1–31
-  dayOfWeek: string; // e.g. "Monday"
-  date: Date; // full Date object
-  formatted: string; // e.g. "Sep 25 2025"
+  dayOfWeek: number; // Sunday = 0
+  date: Date;
+  formatted: string; // e.g. "Thu Sep 25 2025"
 };
 
 export function getDateRange(
@@ -16,28 +65,17 @@ export function getDateRange(
 } {
   const start = new Date(startDateStr);
 
-  // helper to extract info
   const toDateInfo = (d: Date): DateInfo => {
-    const dayNames = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
     return {
       year: d.getFullYear(),
       month: d.getMonth() + 1,
       day: d.getDate(),
-      dayOfWeek: dayNames[d.getDay()],
+      dayOfWeek: d.getDay(), // directly returns number, Sunday=0
       date: d,
-      formatted: d.toDateString(), // "Thu Sep 25 2025"
+      formatted: d.toDateString(),
     };
   };
 
-  // endDate = startDate + duration
   const end = new Date(start);
   end.setDate(start.getDate() + duration);
 

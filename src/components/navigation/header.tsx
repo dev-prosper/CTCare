@@ -24,7 +24,9 @@ export default function Header() {
             <p className="flex gap-2 font-semibold items-center text-gray-800">
               John Doe{" "}
             </p>
-            <span>{/* <LogoutPopover /> */}</span>
+            <div>
+              <LogoutPopover />
+            </div>
           </div>
         </div>
       </nav>

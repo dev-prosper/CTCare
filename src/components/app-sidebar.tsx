@@ -40,15 +40,15 @@ const navItems = {
 
 export function AppSidebar() {
   const pathname = usePathname();
-  const { role } = useAuthStore();
+  const roles = useAuthStore.getState().roles;
 
   let itemsToShow: NavItem[] = [];
-  if (role === "manager") {
+  if (roles?.includes("manager")) {
     itemsToShow = [navItems.dashboard, navItems.leaveRequests];
-  } else if (role === "employee") {
-    itemsToShow = [navItems.dashboard];
-  } else if (role === "people-team") {
+  } else if (roles?.includes("people-team")) {
     itemsToShow = [navItems.settings];
+  } else {
+    itemsToShow = [navItems.dashboard];
   }
 
   return (
