@@ -11,7 +11,7 @@ const api = axios.create({
   headers: {
     "x-api-key": "local-dev-key-123",
   },
-  withCredentials: false,
+  withCredentials: true,
 });
 
 // Request interceptor: attach access token
