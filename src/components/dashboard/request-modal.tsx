@@ -47,7 +47,7 @@ export default function RequestModal() {
     },
   });
 
-  // const duration = form.watch("duration");
+  const duration = form.watch("duration");
 
   const submitRequest = async (data: LeaveRequestFormType) => {
     const employeeId = useAuthStore.getState().employeeId;
@@ -176,7 +176,7 @@ export default function RequestModal() {
                 )}
               />
 
-              {/* {duration > 2 && (
+              {duration > 2 && (
                 <FormField
                   control={form.control}
                   name="doctorNoteAttachmentId"
@@ -187,7 +187,6 @@ export default function RequestModal() {
                       </FormLabel>
                       <FormControl>
                         <div>
-                          
                           <input
                             id="file-upload"
                             type="file"
@@ -208,11 +207,11 @@ export default function RequestModal() {
                                     headers: {
                                       "Content-Type": "multipart/form-data",
                                     },
-                                  }
+                                  },
                                 );
 
-                                const fileId = res.data?.id; 
-                                field.onChange(fileId); 
+                                const fileId = res.data?.id;
+                                field.onChange(fileId);
                               } catch (error) {
                                 console.error("File upload failed:", error);
                               }
@@ -230,7 +229,6 @@ export default function RequestModal() {
                             Upload File
                           </Button>
 
-                          
                           {field.value && (
                             <p className="mt-2 text-xs text-green-600">
                               File uploaded successfully: {field.value}
@@ -242,7 +240,7 @@ export default function RequestModal() {
                     </FormItem>
                   )}
                 />
-              )} */}
+              )}
 
               <DialogFooter>
                 <Button className="bg-cavista-red" type="submit">
