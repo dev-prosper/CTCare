@@ -48,7 +48,13 @@ export default function RequestModal() {
   const submitRequest = () => {};
 
   return (
-    <Dialog>
+    <Dialog
+      onOpenChange={(open) => {
+        if (!open) {
+          form.reset();
+        }
+      }}
+    >
       <DialogTrigger asChild>
         <Button className="bg-cavista-red py-6 flex items-center font-semibold">
           Request Sick Leave
@@ -124,6 +130,7 @@ export default function RequestModal() {
                       <Input
                         type="number"
                         {...field}
+                        onChange={(e) => field.onChange(e.target.valueAsNumber)}
                         className="focus-visible:border-cavista-red focus-visible:border-2"
                       />
                     </FormControl>
